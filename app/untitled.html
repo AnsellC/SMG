@@ -1,0 +1,15 @@
+<?php
+
+
+class ApiController extends \BaseController {
+
+	public function getphotos($user_id, $count = 10, $skip = 0) {
+
+
+		$photos = Photo::where('user_id', $user_id)->take($count)->skip($skip)->get();
+
+		return Response::json($photos);
+	}
+	
+}
+?>
