@@ -4,7 +4,11 @@
 		<div class="row">
 			<div class="col-xs-4 col-md-2">
 				<div class="picture">
-					<img class="avatar img-responsive" src="{{{ $user->getProfilePic('120x120') }}}" alt="" /><br />
+					@if(!Auth::user()->getProfilePic())
+						<img src="/img/avatar/1.png" class="img-circle" alt=""/><br />
+					@else
+						<img class="avatar img-responsive" src="{{{ $user->getProfilePic('120x120') }}}" alt="" /><br />
+					@endif
 					<button class="btn btn-primary btn-sm">Follow</button>
 				</div>
 			</div>
@@ -17,9 +21,11 @@
 						{{{ $user->username }}}
 					@endif
 					</h1>
-					<p class="sub">{{{ $user->specialty }}} scale modeling specialist
-
-					@if($user->show_location == "1")
+					<p class="sub">
+					@if(!empty($user->specialty))
+						{{{ $user->specialty }}} scale modeling specialist
+					@endif
+					@if($user->show_location == "1" AND !empty($user->country))
 						<br />
 						<i class="fa fa-map-marker"></i> {{{ $user->country }}}
 					@endif
