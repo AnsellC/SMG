@@ -3,9 +3,9 @@ body,html {height: 100%;}
 #wrap {
  min-height: 100%;
   height: auto;
-  margin: 0 auto -60px;
+  margin: 0 auto -70px;
 
-  padding-bottom: 60px;	
+  padding-bottom: 70px;	
 }
 a:hover {text-decoration: none;}
 body {font-family: 'Open Sans',Arial,Helvetica,sans-serif; padding-top: 90px;}
@@ -53,10 +53,10 @@ h1 {font-size: 27px;}
 div.form-group {margin: 20px 10px;}
 div.form-group label {color: #888;}
 div.form-group .form-control {font-size: 18px; color: #545454;}
-footer {text-align: center; height: 60px; width: 100%; padding: 15px 0px 0px 0px; border-top: 3px solid #e0e0e0; background: #fff; color: #777;}
+footer {text-align: center; height: 70px; width: 100%; padding: 15px 0px 0px 0px; border-top: 3px solid #e0e0e0; background: #fff; color: #777;}
 footer ul {list-style: none;}
-footer ul li {display: inline; margin: 0px 20px;}
-
+footer ul li {display: inline; margin: 0px 20px 10px 0px;}
+footer span.version {font-size: 12px; color: 3888;}
 h2.profile-panel {color: #555; }
 div.profile-details {font-size: 18px;}
 .row.main-content a {}
