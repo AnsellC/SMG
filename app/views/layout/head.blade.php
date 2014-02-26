@@ -4,12 +4,16 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="description" content="">
 		<meta name="author" content="">
-
+	
 		{{ HTML::style('//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css') }}
 		{{ HTML::style('//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css') }}
 		{{ HTML::style('/css/smg.css?=' . time())}}
 		{{ HTML::style('/css/bootstrap-switch.min.css') }}
 		{{ HTML::style('//cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.min.css') }}
+		
+		@if(Route::is('collections.show'))
+			{{ HTML::style('/css/ekko-lightbox.min.css') }}
+		@endif		
 		<!-- Font -->
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,700,300' rel='stylesheet' type='text/css'>
 	

@@ -1,5 +1,6 @@
 @extends('layout.default')
 @section('content')
+
 <div class="row collection-header">
 
 	<div class="col-xs-12 col-md-8 col-md-offset-2">
@@ -22,20 +23,20 @@
 	<div class="col-md-8 col-md-offset-2 col-xs-12">
 
 		@if(count($collection->photos) == 0)
-	
+		
 			<div class="alert alert-warning">
 				This collection is empty.
 			</div>
 		@else
-			<div class="row" id="photos">
-				@foreach($collection->photos AS $photo)
 
+			<div class="row" id="photos">
+				@foreach($collection->photos AS $photo)			
 					<div class="col-xs-6 col-lg-4">
 						<div class="panel panel-default">
 							<div class="panel-body">
 
 								<?php if(empty($photo->description)) $photo->description = "no description..."; ?>
-								<a href="/{{{ $photo->file_path }}}"><img title="{{{ $photo->file_name}}}" class="img-responsive lazy" src="{{{ Storage::getPhoto($photo->file_path, '384x216') }}}" /></a>
+								<a data-gallery="gallery" data-photo-id="{{ $photo->id }}" data-parent="#photos" data-footer="{{{ $photo->description }}}" data-title="{{ $photo->file_name }}" data-toggle="lightbox" data-remote="{{{ Storage::getPhoto($photo->file_path,'w800') }}}" href="/{{{ $photo->file_path }}}"><img title="{{{ $photo->file_name}}}" class="img-responsive lazy" src="{{{ Storage::getPhoto($photo->file_path, '384x216') }}}" /></a>
 									<div class="pull-left photo-date">
 										<span>{{ Date::make($photo->created_at)->ago() }}</span>
 									</div>

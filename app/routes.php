@@ -268,6 +268,7 @@ Route::get('collections/delete/{id}', array(
 	'uses' => 'CollectionController@delete'
 ))->where(array('id' => '[0-9]+'));
 
+
 Route::get('api/getphotos/{userid}/{count}/{skip}', array(
 	'uses' => 'ApiController@getphotos'
 ))->where(array('userid' => '[0-9]+', 'count' => '[0-9]+', 'skip' => '[0-9]+'));

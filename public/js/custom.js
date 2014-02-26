@@ -167,3 +167,12 @@
 
 			});
 
+$(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
+					event.preventDefault();
+					var photo_id = $(this).data("photo-id");
+					return $(this).ekkoLightbox({
+						onShown: function() {
+							$(".ekko-lightbox-container").append("XXXXX"+photo_id);
+						}
+					});
+				});

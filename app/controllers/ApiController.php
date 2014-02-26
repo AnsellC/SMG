@@ -10,6 +10,8 @@ class ApiController extends \BaseController {
 
 		return View::make('api.getphotos')->withPhotos($photos);
 	}
+
+
 	
 }
 ?>

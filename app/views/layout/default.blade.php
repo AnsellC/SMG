@@ -22,6 +22,7 @@
 	@if(Request::is('my-collections'))
 		@include('modals.delete-item')
 	@endif
+
 	<div class="container-fluid" id="wrap">
 
 	@include('layout.nav1')
@@ -49,13 +50,20 @@
 	//]]>
 	</script>		
 	<!--#### REQUIRED JAVASCRIPT #### -->
-    <script src="/js/jquery.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="/js/html5shiv.js"></script>	
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<script src="/js/bootstrap-switch.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.min.js"></script>
 	<script src="/js/site.js"></script>
 	<!--#### END REQUIRED JAVASCRIPT #### -->
+
+	{{-- LIGHTBOX GALLERY --}}
+	@if(Route::is('collections.show'))
+		<script src="/js/ekko-lightbox.min.js"></script>
+	@endif
+
+
 
 	{{-- MANAGE COLLECTIONS JS --}}
 	@if(Route::is('collections.manage'))
