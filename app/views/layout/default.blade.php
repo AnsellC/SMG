@@ -19,6 +19,9 @@
 		@include('modals.show-photo')
 	@endif
 
+	@if(Request::is('my-collections'))
+		@include('modals.delete-item')
+	@endif
 	<div class="container-fluid" id="wrap">
 
 	@include('layout.nav1')
@@ -95,6 +98,43 @@
 		<script src="/js/dropzone.min.js"></script>
 		<script type="text/javascript">
 			var batch = "{{ str_random(20) }}";
+			
+			$("#file-upload").dropzone({
+				url: "/my-uploads/store",
+				thumbnailWidth: "640",
+				thumbnailHeight: "480",
+				parallelUploads: 4,
+				previewTemplate: '<div class="col-md-3" style="padding: 5px; background: #fff; margin-bottom: 10px; text-align: center;"><span data-dz-name></span></small><br/><img class="img-responsive" data-dz-thumbnail/><div style="height: 12px;" class="progress"><div class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%;" data-dz-uploadprogress></div></div><div data-dz-errormessage></div></div>',
+				previewsContainer: "div#imgs",
+				addRemoveLinks: true,
+				acceptedFiles: "image/*",
+				init: function() {
+
+					this.on("removedfile", function(file){
+						$.ajax({
+							url: "/my-uploads/destroy/"+file.name+"/"+batch,
+							type: "DELETE"
+						});
+					});
+
+					this.on("totaluploadprogress", function(totalBytes, totalBytesSent){
+
+						var percent = totalBytes + '%';
+						$("#barred").width(percent);
+
+						if(totalBytes == 100) {
+
+							$("#next-step").removeClass("disabled");
+							$("#main-progress").removeClass("active");
+							$("#next-step").attr("href", "/my-uploads/process/"+batch);
+						}
+					});
+
+					this.on("sending", function(file, xhr, formData){
+						formData.append("batch", batch);
+					});
+				}
+			})
 		</script>
 
 	@endif

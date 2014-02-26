@@ -26,7 +26,7 @@
 					<div class="row" id="collections">
 						@foreach($collection->photos AS $photo)
 
-							<div id="photo-item-{{ $photo->id }}" class="col-xs-6 col-lg-3 collection-item drag">
+							<div id="item-{{ $photo->id }}" class="col-xs-6 col-lg-3 collection-item drag">
 								<div class="panel panel-default">
 									<div class="panel-body">
 										<a href="/{{ $photo->file_path }}">

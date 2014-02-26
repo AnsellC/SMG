@@ -34,7 +34,7 @@
 					<div class="row">
 					@foreach($photos AS $photo)
  
-					<div class="col-xs-6 col-lg-4" id="photo-item-{{ $photo->id }}" data-chosen="no">
+					<div class="col-xs-6 col-lg-4" id="item-{{ $photo->id }}" data-chosen="no">
 						<div class="panel panel-default">
 							<div class="panel-body photo-items">
 										

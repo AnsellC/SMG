@@ -25,7 +25,7 @@
 					@foreach($collections AS $collection)
 
 						
-						<div class="col-xs-6 col-lg-4">
+						<div class="col-xs-6 col-lg-4" id="item-{{ $collection->id }}">
 							<div class="panel panel-default collection-item">
 								<div class="panel-body">
 									
@@ -45,7 +45,7 @@
 										<ul class="dropdown-menu" role="menu">
 											<li><a href="/collections/{{ $collection->id }}/manage">Manage Photos</a></li>
 											<li><a href="/collections/edit/{{$collection->id}}">Edit</a></li>
-											<li><a href="javascript:;" data-url="/collections/delete/{{$collection->id}}" class="confirm-delete">Delete</a></li>
+											<li><a href="javascript:;" data-url="/collections/delete/{{$collection->id}}" data-id="{{ $collection->id }}" class="confirm-delete">Delete</a></li>
 										</ul>
 									</div>
 									<div class="pull-right collection-stats">

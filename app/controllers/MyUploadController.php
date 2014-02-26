@@ -17,7 +17,7 @@ class MyUploadController extends BaseController {
 	public function index()
 	{
 
-		$photos = Photo::getMine()->get();
+		$photos = Photo::getMine()->orderBy('created_at', 'DESC')->get();
 		$collections = Collection::getMine()->get();
 		return View::make('my-uploads.index')->with('photos', $photos)->withCollections($collections);
         

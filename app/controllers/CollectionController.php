@@ -40,7 +40,7 @@ class CollectionController extends \BaseController {
 		//check if mine
 		$collection = Collection::find($id);
 		if(!$collection->isMine())
-			App::abort(500);
+			App::abort(403);
 
 		foreach(Input::get('photo-item') AS $order => $photo_id)
 		{
@@ -65,7 +65,7 @@ class CollectionController extends \BaseController {
 			App::abort(404);
 
 		if(!$collection->isMine())
-			App::abort(500);
+			App::abort(403);
 
 		//rebuild query
 
@@ -93,7 +93,7 @@ class CollectionController extends \BaseController {
 			App::abort(404);
 
 		if(!$collection->isMine())
-			App::abort(500);
+			App::abort(403);
 
 		$collection->title = Input::get('title');
 		$collection->description = Input::get('description');
@@ -103,6 +103,26 @@ class CollectionController extends \BaseController {
 			return Redirect::back()->withErrors($collection->errors());
 
 		return Redirect::to('my-collections')->withMessage("Collection details updated.");
+
+	}
+
+	public function delete($id) {
+
+		$collection = Collection::find($id);
+		if(!$collection)
+			App::abort(404);
+
+		if(!$collection->isMine())
+			App::abort(403);
+
+		$collection->delete();
+
+		if(Request::ajax())
+			return Response::json('success');
+		return Redirect::back()->withMessage('Collection has been deleted.');
+
+		
+
 
 	}
 }
