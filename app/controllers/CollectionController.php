@@ -11,6 +11,7 @@ class CollectionController extends \BaseController {
 
 		if(!$collection)
 			App::abort(404);
+		$collection->timestamps = false;
 		$collection->increment('views');
 		return View::make('collections.show')->withCollection($collection);
 	}
