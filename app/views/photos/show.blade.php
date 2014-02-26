@@ -61,7 +61,7 @@
 							@endif
 						</div>
 						<div class="col-lg-6 col-xs-6 text-center">
-							<button data-target="#collection-modal" class="btn btn-warning btn-block" data-toggle="modal"><i class="glyphicon glyphicon-folder-open"></i> Add to Collection</button>
+							<button data-target="#collection-modal" class="btn btn-warning btn-block" data-toggle="modal"><i class="fa fa-folder-open"></i> Collect</button>
 						</div>
 					@else
 
