@@ -9,7 +9,7 @@ class Photo extends SMGModel {
 	public $autoPurgeRedundantAttributes = true;
 	protected $fillable = array('user_id','project_id','description','file_name','file_type','file_path', 'process_group', 'file_size');
 	protected $guarded = array('id');
-
+	protected $hidden = array('process_group');
 	public static $rules = array(
 	  'user_id' => 'required',
 	  'project_id' => 'integer',

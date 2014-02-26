@@ -12,7 +12,7 @@
 		{{ HTML::style('//cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.min.css') }}
 		
 		@if(Route::is('collections.show'))
-			{{ HTML::style('/css/ekko-lightbox.min.css') }}
+			{{ HTML::style('/css/jquery.fancybox.css') }}
 		@endif		
 		<!-- Font -->
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,700,300' rel='stylesheet' type='text/css'>

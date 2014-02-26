@@ -36,7 +36,7 @@
 							<div class="panel-body">
 
 								<?php if(empty($photo->description)) $photo->description = "no description..."; ?>
-								<a data-gallery="gallery" data-photo-id="{{ $photo->id }}" data-parent="#photos" data-footer="{{{ $photo->description }}}" data-title="{{ $photo->file_name }}" data-toggle="lightbox" data-remote="{{{ Storage::getPhoto($photo->file_path,'w800') }}}" href="/{{{ $photo->file_path }}}"><img title="{{{ $photo->file_name}}}" class="img-responsive lazy" src="{{{ Storage::getPhoto($photo->file_path, '384x216') }}}" /></a>
+								<a data-fancybox-group="gallery" class="fancybox fancybox.ajax" href="/api/getphoto/{{$photo->id}}/html"><img title="{{{ $photo->file_name}}}" class="img-responsive lazy" src="{{{ Storage::getPhoto($photo->file_path, '384x216') }}}" /></a>
 									<div class="pull-left photo-date">
 										<span>{{ Date::make($photo->created_at)->ago() }}</span>
 									</div>

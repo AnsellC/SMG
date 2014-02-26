@@ -167,12 +167,20 @@
 
 			});
 
-$(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
-					event.preventDefault();
-					var photo_id = $(this).data("photo-id");
-					return $(this).ekkoLightbox({
-						onShown: function() {
-							$(".ekko-lightbox-container").append("XXXXX"+photo_id);
-						}
-					});
-				});
+$('.fancybox').fancybox({
+	padding: 0,
+	width: '90%',
+	height: '640px',
+	autoSize: false,
+	scrolling: 'no',
+	helpers : {
+        overlay : {
+            css : {
+                'background' : 'rgba(0, 0, 0, 0.70)'
+            }
+        }
+    }	
+});
+
+
+

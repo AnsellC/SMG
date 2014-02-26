@@ -60,7 +60,7 @@
 
 	{{-- LIGHTBOX GALLERY --}}
 	@if(Route::is('collections.show'))
-		<script src="/js/ekko-lightbox.min.js"></script>
+		<script src="/js/jquery.fancybox.pack.js"></script>
 	@endif
 
 

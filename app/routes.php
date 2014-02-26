@@ -272,3 +272,10 @@ Route::get('collections/delete/{id}', array(
 Route::get('api/getphotos/{userid}/{count}/{skip}', array(
 	'uses' => 'ApiController@getphotos'
 ))->where(array('userid' => '[0-9]+', 'count' => '[0-9]+', 'skip' => '[0-9]+'));
+
+
+Route::get('api/getphoto/{id}/{response}', array(
+	'uses' => 'ApiController@getphoto'
+
+
+))->where(array('id' => '[0-9]+', 'response' => 'html|json'));
