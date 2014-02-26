@@ -236,27 +236,32 @@ Route::get('collections/{id}-{slug}', array(
 ))->where(array('id' => '[0-9]+'));
 
 Route::get('collections/edit/{id}', array(
+	'before' => 'auth',
 	'as' => 'collections.edit',
 	'uses' => 'CollectionController@edit'
 
 ))->where(array('id' => '[0-9]+'));
 
 Route::post('collections/edit/{id}', array(
+	'before' => 'auth',
 	'as' => 'collections.update',
 	'uses' => 'CollectionController@update'
 ))->where(array('id' => '[0-9]+'));
 
 Route::get('collections/{id}/manage', array(
+	'before' => 'auth',
 	'as' => 'collections.manage',
 	'uses' => 'CollectionController@manage'
 ))->where(array('id' => '[0-9]+'));
 
 Route::post('collections/{id}/saveorder', array(
+	'before' => 'auth',
 	'as' => 'collections.saveorder',
 	'uses' => 'CollectionController@saveorder'
 ))->where(array('id' => '[0-9]+'));
 
 Route::get('collections/edit/{collection_id}/remove/{photo_id}', array(
+	'before' => 'auth',
 	'as' => 'collections.removephoto',
 	'uses' => 'CollectionController@removephoto'
 ))->where(array('collection_id' => '[0-9]+', 'photo_id' => '[0-9]+'));

@@ -82,7 +82,7 @@ class CollectionController extends \BaseController {
 			App::abort(404);
 
 		if(!$collection->isMine())
-			App::abort(500);
+			App::abort(403);
 		return View::make('collections.edit')->withCollection($collection);
 	}
 
