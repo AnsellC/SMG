@@ -105,7 +105,7 @@ Route::get('profile-picture', array(
 
 Route::post('profile-picture', array(
 	'before' => 'confirmed',
-	'uses' => 'Usercontroller@postProfilePicture',
+	'uses' => 'UserController@postProfilePicture',
 
 ));
 
