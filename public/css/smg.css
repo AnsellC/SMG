@@ -103,7 +103,7 @@ ul.user-dropdown {top: 50px; border-radius: 0px; min-width: 250px;}
 	.panel-heading>.pull-left.title {width: 240px; overflow: hidden;}
 }
 
-div.hold:before {content: ''; display: inline-block; height: 100%; vertical-align: middle; width: 0;}
+div.hold:before {content: ''; display: inline-block; height: 100%; vertical-align: middle; width: 0px;}
 .photo-holder {padding: 0px; background: #333; overflow: hidden;}
 .photo-holder img {vertical-align: middle; display: inline-block; position: relative;}
 
