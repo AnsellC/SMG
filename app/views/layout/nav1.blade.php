@@ -46,7 +46,7 @@
 					<li>{{ HTML::link('/my-uploads/create', 'Upload Photos') }}</li>
 					<li class="divider"></li>
 					@if(!Auth::user()->confirmed)
-						<li>{{HTML::link('/resend-activation','Resend Activation')}}</li>
+						<li>{{HTML::link('/account/resend-activation','Resend Activation')}}</li>
 					@endif					
 					<li>{{HTML::link('/logout','Sign out')}}</li>
 				</ul>	

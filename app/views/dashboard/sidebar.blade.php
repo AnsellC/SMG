@@ -20,12 +20,12 @@
 		<div class="list-group visible-lg visible-md">
 			<a class="list-group-item {{ Request::is( 'my-uploads/create') ? 'active' : '' }}" href="/my-uploads/create"><i class="fa fa-cloud-upload"></i> Upload Photos</a>
 			<a class="list-group-item {{ Request::is( 'my-collections/create') ? 'active' : '' }}" href="/my-collections/create"><i class="glyphicon glyphicon-folder-close"></i> Create a Collection</a>
-			<a class="list-group-item {{ Request::is( 'edit-profile') ? 'active' : '' }}" href="/edit-profile"><i class="fa fa-pencil"></i> Edit profile</a>
-			<a class="list-group-item {{ Request::is( 'edit-email-pass') ? 'active' : '' }}" href="/edit-email-pass"><i class="fa fa-lock"></i> Email &amp; password</a>
-			<a class="list-group-item {{ Request::is( 'profile-picture') ? 'active' : '' }}" href="/profile-picture"><i class="fa fa-picture-o"></i> Your Profile Picture</a>
+			<a class="list-group-item {{ Request::is( 'account/edit-profile') ? 'active' : '' }}" href="/account/edit-profile"><i class="fa fa-pencil"></i> Edit profile</a>
+			<a class="list-group-item {{ Request::is( 'account/email-pass') ? 'active' : '' }}" href="/account/email-pass"><i class="fa fa-lock"></i> Email &amp; password</a>
+			<a class="list-group-item {{ Request::is( 'account/profile-picture') ? 'active' : '' }}" href="/account/profile-picture"><i class="fa fa-picture-o"></i> Your Profile Picture</a>
 			<a class="list-group-item {{ Request::is( 'my-uploads') ? 'active' : '' }}" href="/my-uploads"><i class="glyphicon glyphicon-picture"></i> My Photos</a>	
 			<a class="list-group-item {{ Request::is( 'my-collections') ? 'active' : '' }}" href="/my-collections"><i class="fa fa-folder-open"></i> My Collections</a>
 			@if(!Auth::user()->confirmed)
-			<a class="list-group-item {{ Request::is( 'resend-activation') ? 'active' : '' }}" href="resend-activation"><i class="fa fa-mail-forward"></i> Resend Activation Mail</a>
+			<a class="list-group-item {{ Request::is( 'account/resend-activation') ? 'active' : '' }}" href="/account/resend-activation"><i class="fa fa-mail-forward"></i> Resend Activation Mail</a>
 			@endif
 		</div>

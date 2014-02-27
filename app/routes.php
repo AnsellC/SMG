@@ -10,7 +10,12 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+App::error(function(ModelNotFoundException $e)
+{
+    return Response::make(404);
+});
 
 Route::get('/', function()
 {
@@ -20,262 +25,361 @@ Route::get('/', function()
 	return View::make('static.homepage');
 });
 
+//static page for displaying messages 
+Route::get('unverified-email', function(){
+	return View::make('static.unverified-email');
+});
 
-Route::get('register', array('before' => 'guest', function(){
-	return View::make('static.register');
 
-}));
+/*
+|--------------------------------------------------------------------------
+| User routes
+|--------------------------------------------------------------------------
+|
+| Routes mostly associated with user-related model/actions
+| 
+|
+*/
 
-Route::get('login', array('before' => 'guest', function(){
-	return View::make('static.login');
-
-}));
-
-Route::post('register',  array(
-	'before' => 'guest',
-	'uses' => 'UserController@store',
-	'as' => 'user.add'
-
-));
-
-Route::post('login', array(
-	'before' => 'guest',
-	'uses' => 'UserController@login',
-	'as' => 'login'
+Route::get('register', array(
+	'before' 	=> 	'guest', 
+	function(){
+		return View::make('users.register');
+	}
 ));
 
 Route::get('logout', function(){
-
 	Auth::logout();
 	return Redirect::to('/');
 
 });
 
-Route::get('unverified-email', function(){
 
-	return View::make('static.unverified-email');
-});
-
-
-Route::get('edit-email-pass', array(
-	'before' => 'auth',
-	'as' => 'users.edit-email-pass',
-	function(){
-
-	return View::make('users.email-pass');
-
+Route::get('login', array('before' => 'guest', function(){
+	return View::make('users.login');
 }));
 
-Route::get('resend-activation', array(
-	'before' => 'unconfirmed',
-	'as' => 'users.resend-activation',
-	function(){
+Route::post('register',  array(
+	'before' 	=> 'guest',
+	'uses' 		=> 'UserController@store',
 
+));
+
+Route::post('login', array(
+	'before' 	=> 'guest',
+	'uses' 		=> 'UserController@login',
+	'as' 		=> 'login'
+));
+
+Route::get('account/email-pass', array(
+	'before' 	=> 'auth',
+	function(){
+		return View::make('users.email-pass');
+	}
+));
+
+Route::get('account/resend-activation', array(
+	'before' 	=> 'unconfirmed',
+	function(){
 		return View::make('users.resend-activation');
 	}
 ));
 
 
-Route::get('resend-activation-now', array(
-	'before' => 'unconfirmed',
-	function(){
+Route::get('account/resend-activation-now', array(
+	'before'	=> 'unconfirmed',
+	'uses'		=> 'UserController@resendActivation'
+));
 
-		//send email
-		$email = Auth::user()->email;
-		$username = Auth::user()->username;
-
-		Mail::queue('emails.welcome', array('code' => Auth::user()->confirmation_code, 'id' => Auth::user()->id), function($message) use($email, $username){
-
-			$message->to($email, $username)->subject('Welcome to SMG! Please verify your e-mail address');
-		});
-		return Redirect::to('dashboard')->withMessage('Confirmation email has been sent to <strong>'.$email.'</strong>.');
+Route::get('account/profile-picture', array(
+	'before' 	=> 'confirmed',
+	function() {
+		Return View::make('users.profile-picture')->with('user', Auth::user());
 	}
 ));
 
-Route::get('profile-picture', array(
-	'before' => 'confirmed',
-	'as' => 'profile-picture',
-	'uses' => 'UserController@getProfilePicture',
-));
 
-
-Route::post('profile-picture', array(
-	'before' => 'confirmed',
-	'uses' => 'UserController@postProfilePicture',
+Route::post('account/profile-picture', array(
+	'before' 	=> 'confirmed',
+	'uses' 		=> 'UserController@saveProfilePicture',
+	'as'		=> 'account.saveProfilePicture'
 
 ));
 
+Route::get('dashboard', array(
+	'before' 	=> 'auth', 
+	function(){
+		return View::make('users.dashboard');
+	}
+));
 
-Route::get('dashboard', array('before' => 'auth', function(){
+Route::get('account/edit-profile', array(
+	'before'	=> 'auth', 
+	function(){
+		return View::make('users.edit-profile');
+	}
+));
 
-	return View::make('users.dashboard');
-}));
-
-Route::get('edit-profile', array('before' => 'auth', function(){
-
-	return View::make('users.edit-profile');
-}));
+Route::put('users/update/{id}', array(
+	'before'	=> 'owner', 
+	'uses'		=> 'UserController@update',
+	'as'		=> 'users.update'
+))->where(array('id' => '[0-9]+'));
 
 
 Route::get('users/validate/{id}/{code}', array(
-	'uses' => 'UserController@validate',
+	'uses' 		=> 'UserController@validate',
 ))->where(array('id' => '[0-9]+', 'code' => '[a-zA-Z0-9]+'));
 
-Route::put('users/changepass', array(
-	'before' => 'auth',
-	'uses' => 'UserController@changepass',
-	'as' => 'users.changepass'
+Route::put('account/changepass', array(
+	'before' 	=> 'auth',
+	'uses' 		=> 'UserController@changepass',
+	'as'		=> 'account.changepass'
 ));
-Route::resource('users', 'UserController');
 
+
+Route::get('users/{username}', array(
+	'uses'		=> 'UserController@show'
+));
 Route::get('users/{username}/collections', array(
 
-	'uses' => 'UserController@showCollections',
-	'as' => 'users.showCollections'
+	'uses' 		=> 'UserController@showCollections',
+	'as' 		=> 'users.showCollections'
 	
 ))->where(array('username' => '[a-zA-Z0-9_-]+'));
 
 
 Route::get('users/addfavorite/{photoid}', array(
 
-	'before' => 'auth',
-	'uses' => 'UserController@addfavorite'
+	'before' 	=> 'auth',
+	'uses' 		=> 'UserController@addfavorite'
 
 ))->where(array('photoid' => '[0-9]+'));
+
 Route::get('users/delfavorite/{photoid}', array(
 
-	'before' => 'auth',
-	'uses' => 'UserController@delfavorite'
+	'before' 	=> 'auth',
+	'uses' 		=> 'UserController@delfavorite'
 
 ))->where(array('photoid' => '[0-9]+'));
 
 
+
+
+/*
+|--------------------------------------------------------------------------
+| my-uploads
+|--------------------------------------------------------------------------
+|
+| 
+| 
+|
+*/
+
+Route::get('my-uploads/process/{process_group}', array(
+	'before' 	=> 'auth',
+	'as' 		=> 'my-uploads/process',
+	'uses' 		=> 'MyUploadController@process'
+));
+Route::post('my-uploads/process', array(
+	'before' 	=> 'auth',
+	'as' 		=> 'my-uploads/process',
+	'uses' 		=> 'MyUploadController@process_save'
+));
+
+Route::post('my-uploads/store', array(
+	'before' 	=> 'confirmed',
+	'as' 		=> 'my-uploads/store',
+	'uses' 		=> 'MyUploadController@store'
+));
+Route::delete('my-uploads/destroy/{filename}/{batch}', array(
+	'before' 	=> 'confirmed',
+	'as' 		=> 'my-uploads/destroy',
+	'uses' 		=> 'MyUploadController@destroy'
+));
+
+Route::get('my-uploads/create', array(
+	'before'	=> 'confirmed',
+	'uses'		=> 'MyUploadController@create'
+
+));
+
+Route::get('my-uploads', array(
+	'before'	=> 'confirmed',
+	'uses'		=> 'MyUploadController@index'
+));
+
+/*
+|--------------------------------------------------------------------------
+| my-collections
+|--------------------------------------------------------------------------
+|
+| 
+| 
+|
+*/
+
+Route::post('my-collections/add-photos', array(
+	'before' 	=> 'confirmed',
+	'as' 		=> 'my-collections/add-photos',
+	'uses' 		=> 'MyCollectionController@addPhotos'
+));
 Route::post('my-collections/store', array(
-	'before' => 'confirmed',
-	'as' => 'my-collections/store',
-	'uses' => 'MyCollectionController@store',
+	'before' 	=> 'confirmed',
+	'as' 		=> 'my-collections/store',
+	'uses' 		=> 'MyCollectionController@store',
 	
 ));
 
-Route::post('my-collections/add-photos', array(
-	'before' => 'confirmed',
-	'as' => 'my-collections/add-photos',
-	'uses' => 'MyCollectionController@addPhotos'
-));
-Route::resource('my-collections', 'MyCollectionController');
 
-Route::get('my-uploads/process/{process_group}', array(
-	'before' => 'auth',
-	'as' => 'my-uploads/process',
-	'uses' => 'MyUploadController@process'
-));
-Route::post('my-uploads/process', array(
-	'before' => 'auth',
-	'as' => 'my-uploads/process',
-	'uses' => 'MyUploadController@process_save'
+Route::get('my-collections/create', array(
+	'before'	=> 'confirmed',
+	'uses'		=> 'MyCollectionController@create'
 ));
 
-Route::resource('my-uploads', 'MyUploadController');
-Route::post('my-uploads/store', array(
-	'before' => 'confirmed',
-	'as' => 'my-uploads/store',
-	'uses' => 'MyUploadController@store'
+
+Route::get('my-collections', array(
+	'before'	=> 'auth',
+	'uses'		=> 'MyCollectionController@index'
 ));
-Route::delete('my-uploads/destroy/{filename}/{batch}', array(
-	'before' => 'confirmed',
-	'as' => 'my-uploads/destroy',
-	'uses' => 'MyUploadController@destroy'
-));
-//Route::resource('photos', 'PhotoController');
+
+
+/*
+|--------------------------------------------------------------------------
+| photos
+|--------------------------------------------------------------------------
+|
+| 
+| 
+|
+*/
 Route::get('photos/delete/{id}', array(
-	'before' => 'auth',
-	'as' => 'photos/destroy',
-	'uses' => 'PhotoController@destroy'
+	'before' 	=> 'auth',
+	'as' 		=> 'photos/destroy',
+	'uses' 		=> 'PhotoController@destroy'
 ));
 
 Route::get('photos/edit/{id}', array(
-	'before' => 'auth',
-	'as' => 'photos/edit',
-	'uses' => 'PhotoController@edit'
+	'before' 	=> 'auth',
+	'as' 		=> 'photos/edit',
+	'uses' 		=> 'PhotoController@edit'
 ));
 
 Route::patch('photos/update/{id}', array(
-	'before' => 'auth',
-	'as' => 'photos/update',
-	'uses' => 'PhotoController@update'
+	'before' 	=> 'auth',
+	'as' 		=> 'photos/update',
+	'uses' 		=> 'PhotoController@update'
 ));
 
 
 Route::get('photos/groupdelete/{str}', array(
-	'before' => 'auth',
-	'as' => 'photos/groupdelete',
-	'uses' => 'PhotoController@groupdelete'
+	'before' 	=> 'auth',
+	'as' 		=> 'photos/groupdelete',
+	'uses' 		=> 'PhotoController@groupdelete'
 ))->where(array('str' => '[0-9\,]+'));
 
 
 
 Route::get('/{photo_path}', array(
-	'as' => 'photos.show',
-	'uses' => 'PhotoController@show'
+	'as' 		=> 'photos.show',
+	'uses' 		=> 'PhotoController@show'
 ))->where(array('photo_path' => '[a-zA-Z0-9]{20,}'));
 
 
+
+/*
+|--------------------------------------------------------------------------
+| photocomments
+|--------------------------------------------------------------------------
+|
+| 
+| 
+|
+*/
 Route::post('photocomments/create', array(
-	'before' => 'auth',
-	'as' => 'photocomments/create',
-	'uses' => 'PhotoCommentsController@create'
+	'before' 	=> 'auth',
+	'as' 		=> 'photocomments/create',
+	'uses' 		=> 'PhotoCommentsController@create'
 ));
 
+
+
+/*
+|--------------------------------------------------------------------------
+| collections
+|--------------------------------------------------------------------------
+|
+| 
+| 
+|
+*/
 Route::get('collections/{id}-{slug}', array(
-	'as' => 'collections.show',
-	'uses' => 'CollectionController@show'
+	'as' 		=> 'collections.show',
+	'uses' 		=> 'CollectionController@show'
 ))->where(array('id' => '[0-9]+'));
 
 Route::get('collections/edit/{id}', array(
-	'before' => 'auth',
-	'as' => 'collections.edit',
-	'uses' => 'CollectionController@edit'
+	'before' 	=> 'auth',
+	'as' 		=> 'collections.edit',
+	'uses' 		=> 'CollectionController@edit'
 
 ))->where(array('id' => '[0-9]+'));
 
 Route::post('collections/edit/{id}', array(
-	'before' => 'auth',
-	'as' => 'collections.update',
-	'uses' => 'CollectionController@update'
+	'before' 	=> 'auth',
+	'as' 		=> 'collections.update',
+	'uses' 		=> 'CollectionController@update'
 ))->where(array('id' => '[0-9]+'));
 
 Route::get('collections/{id}/manage', array(
-	'before' => 'auth',
-	'as' => 'collections.manage',
-	'uses' => 'CollectionController@manage'
+	'before' 	=> 'auth',
+	'as' 		=> 'collections.manage',
+	'uses' 		=> 'CollectionController@manage'
 ))->where(array('id' => '[0-9]+'));
 
 Route::post('collections/{id}/saveorder', array(
-	'before' => 'auth',
-	'as' => 'collections.saveorder',
-	'uses' => 'CollectionController@saveorder'
+	'before' 	=> 'auth',
+	'as' 		=> 'collections.saveorder',
+	'uses' 		=> 'CollectionController@saveorder'
 ))->where(array('id' => '[0-9]+'));
 
+
 Route::get('collections/edit/{collection_id}/remove/{photo_id}', array(
-	'before' => 'auth',
-	'as' => 'collections.removephoto',
-	'uses' => 'CollectionController@removephoto'
+	'before' 	=> 'auth',
+	'as' 		=> 'collections.removephoto',
+	'uses' 		=> 'CollectionController@removephoto'
 ))->where(array('collection_id' => '[0-9]+', 'photo_id' => '[0-9]+'));
 
 Route::get('collections/delete/{id}', array(
-	'before' => 'auth',
-	'as' => 'collections.delete',
-	'uses' => 'CollectionController@delete'
+	'before' 	=> 'auth',
+	'as' 		=> 'collections.delete',
+	'uses' 		=> 'CollectionController@delete'
 ))->where(array('id' => '[0-9]+'));
 
 
+
+/*
+|--------------------------------------------------------------------------
+| API
+|--------------------------------------------------------------------------
+|
+| 
+| 
+|
+*/
+
 Route::get('api/getphotos/{userid}/{count}/{skip}', array(
-	'uses' => 'ApiController@getphotos'
+	'uses' 		=> 'ApiController@getphotos'
 ))->where(array('userid' => '[0-9]+', 'count' => '[0-9]+', 'skip' => '[0-9]+'));
 
 
 Route::get('api/getphoto/{id}/{response}', array(
-	'uses' => 'ApiController@getphoto'
-
-
+	'uses' 		=> 'ApiController@getphoto'
 ))->where(array('id' => '[0-9]+', 'response' => 'html|json'));
+
+
+
+
+
+
+

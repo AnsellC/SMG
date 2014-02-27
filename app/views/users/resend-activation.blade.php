@@ -20,7 +20,7 @@
 			@include('dashboard.messages')
 			
 				<p>An e-mail containing an activation link will be sent to <strong>{{Auth::user()->email}}</strong>. It may take a while for the email to arrive and also check your spam/trash folder.</p>
-				<a href="resend-activation-now" class="btn btn-primary">Re-send Activation E-Mail Now</a>		
+				<a href="/account/resend-activation-now" class="btn btn-primary">Re-send Activation E-Mail Now</a>		
 			</div>
 		  </div>
 		</div>

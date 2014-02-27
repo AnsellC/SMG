@@ -9,6 +9,7 @@
 
 	<div class="col-md-9">
 		<h1>Profile Picture</h1>
+		@include('dashboard.messages')
 				<div class="alert alert-warning">
 					<ul>
 						<li>Accepted file types: JPG, PNG, GIF</li>
@@ -20,8 +21,8 @@
 
 		<div class="panel">
 			<div class="panel-body">
-
-				{{Form::open(array('route' => 'profile-picture', 'method' => 'post', 'files' => true))}}
+				
+				{{Form::open(array('route' => 'account.saveProfilePicture', 'method' => 'post', 'files' => true))}}
 				<div class="form-group">
 					{{Form::label('profile_photo', 'Upload a Profile Photo')}}
 					{{Form::file('profile_photo', array('class' => 'form-control'))}}

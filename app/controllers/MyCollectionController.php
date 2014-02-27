@@ -127,8 +127,8 @@ class MyCollectionController extends BaseController {
 			
 			$collection->touch();
 			if(count($photos) == 1)
-				return Redirect::back()->withMessage('Photos added to '.$collection->title);
-			return Redirect::to('/my-uploads')->withMessage('Photos added to '.$collection->title);
+				return Redirect::back()->withMessage('Photo has been added to <a href="/collections/'.$collection->id.'-'.Str::slug($collection->title).'">'.$collection->title.'</a>');
+			return Redirect::to('/my-uploads')->withMessage('Photos added to <a href="/collections/'.$collection->id.'-'.Str::slug($collection->title).'">'.$collection->title.'</a>');
 		}
 
 		

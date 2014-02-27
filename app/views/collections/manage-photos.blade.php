@@ -40,7 +40,7 @@
 													<li><a href="/photos/edit/{{$photo->id}}">Edit Photo</a></li>
 													<li><a href="javascript:;" data-url="/photos/delete/{{$photo->id}}" data-id="{{ $photo->id }}" class="confirm-delete">Delete</a></li>
 												@endif
-												<li><a class="ajax-request" data-remove="#photo-{{ $photo->id }}" href="/collections/edit/{{ $collection->id }}/remove/{{$photo->id}}">Remove from collection</a></li>
+												<li><a class="ajax-request" data-remove="#item-{{ $photo->id }}" href="/collections/edit/{{ $collection->id }}/remove/{{$photo->id}}">Remove from collection</a></li>
 												
 											</ul>
 										</div>

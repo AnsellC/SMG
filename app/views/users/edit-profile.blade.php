@@ -17,7 +17,7 @@
 				<h4>Personal Info (Optional)</h4>
 				
 				{{Form::model(Auth::user(), array('route' => array('users.update', Auth::user()->id), 'method' => 'put', 'role' => 'form'))}}
-				<input type="hidden" name="m" value="edit-profile" />
+				<input type="hidden" name="m" value="/account/edit-profile" />
 
 				<div class="form-group {{ $errors->has('fullname') ? 'has-error' : '' }}">
 					{{ Form::label('fullname', 'Full Name', array('class' => 'form-label')) }}

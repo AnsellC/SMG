@@ -17,7 +17,7 @@
 				<h4>Change E-Mail Address</h4>
 				
 				{{Form::model(Auth::user(), array('route' => array('users.update', Auth::user()->id), 'method' => 'put'))}}
-				<input type="hidden" name="m" value="edit-email-pass" />
+				<input type="hidden" name="m" value="/account/email-pass" />
 				
 				<div class="form-group has-feedback {{ $errors->has('email') ? 'has-error' : '' }}">
 					{{ Form::label('email', 'E-mail Address', array('class' => 'form-label')) }}
@@ -31,7 +31,7 @@
 				{{Form::close()}}	
 
 				<h4>Change Password</h4>
-				{{ Form::open(array('route' => 'users.changepass', 'method' => 'put')) }}
+				{{ Form::open(array('route' => 'account.changepass', 'method' => 'put')) }}
 				
 				<div class="form-group {{ $errors->has('current_password') ? 'has-error' : '' }}">
 					{{ Form::label('current_password', 'Current Password', array('class' => 'form-label')) }}

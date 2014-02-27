@@ -167,20 +167,21 @@
 
 			});
 
-$('.fancybox').fancybox({
-	padding: 0,
-	width: '90%',
-	height: '640px',
-	autoSize: false,
-	scrolling: 'no',
-	helpers : {
-        overlay : {
-            css : {
-                'background' : 'rgba(0, 0, 0, 0.70)'
-            }
-        }
-    }	
-});
+if($('.fancybox').length > 0)
+	$('.fancybox').fancybox({
+		padding: 0,
+		width: '90%',
+		height: '640px',
+		autoSize: false,
+		scrolling: 'no',
+		helpers : {
+	        overlay : {
+	            css : {
+	                'background' : 'rgba(0, 0, 0, 0.70)'
+	            }
+	        }
+	    }	
+	});
 
 
 

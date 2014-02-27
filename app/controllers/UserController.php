@@ -4,13 +4,12 @@
 class UserController extends \BaseController {
 
 	
- public function __construct()
-    {
-        $this->beforeFilter('auth', array('except' => array('show','login','store','validate')));
-        $this->beforeFilter('owner', array('on' => array('update','changepass')));
-        $this->beforeFilter('confirmed', array('on' => array('postProfilePicture','getProfilePicture'))); //doesnt seem to work
-    }
-
+    /**
+    * Store/save a new user account
+    *
+    * @return view
+    */
+    
 	public function store()
 	{
 
@@ -42,11 +41,18 @@ class UserController extends \BaseController {
 		}
 	}
 
+
+
+	/**
+	* Adds a photo to the currently logged in user's favorite
+	*
+	* @return json status
+	*/
+	
 	public function addfavorite($photo_id) {
 
-		$photo = Photo::find($photo_id);
-		if(count($photo) == 0 OR $photo == null)
-			App::abort(404);
+		$photo = Photo::findOrFail($photo_id);
+	
 
 		$likers = $photo->likers()->lists('user_id');
 		
@@ -60,11 +66,17 @@ class UserController extends \BaseController {
 	}
 
 
+	/**
+	* Delete a photo from the logged in user's favorite
+	*
+	* @return json status
+	*/
+	
+
 	public function delfavorite($photo_id) {
 
-		$photo = Photo::find($photo_id);
-		if(count($photo) == 0 OR $photo == null)
-			App::abort(404);
+		$photo = Photo::findOrFail($photo_id);
+		
 
 		$likers = $photo->likers()->lists('user_id');
 		
@@ -78,6 +90,12 @@ class UserController extends \BaseController {
 	}
 
 
+	/**
+	* Login method for the user
+	*
+	* @return redirect
+	*/
+	
 	public function login()
 	{
 
@@ -99,6 +117,14 @@ class UserController extends \BaseController {
 
 	}
 
+
+	/**
+	* Display a user's profile
+	*
+	* @param string $username
+	* @return view
+	*/
+	
 	public function show($username)
 	{
 		
@@ -114,6 +140,16 @@ class UserController extends \BaseController {
 		return View::make('users.show')->with('user', $user)->withPhotos($photos)->withCollections($collections);
 	}
 
+
+
+	/**
+	* Show a user's collection
+	*
+	* @param string $username
+	* @return view
+	*/
+	
+
 	public function showCollections($username) {
 
 		$user = User::where('username', $username)->first();
@@ -126,20 +162,28 @@ class UserController extends \BaseController {
 
 
 	}
-	public function edit($id)
-	{
-		//
-	}
 
+
+	/**
+	* Update-save a user's profile
+	*
+	* @param int $id
+	* @return redirect
+	*/
+	
 
 	public function update($id)
 	{
-		$user = User::find($id);
+		$user = User::findOrFail($id);
+
+		
+		if(!$user->isMine())
+			App::error(403);
 
 		$user->fill(Input::all());
 		
 		$method = Input::get('m');
-		if($method == "edit-profile")
+		if($method == "/account/edit-profile")
 		{
 
 			if($user->showfullname !== "1")
@@ -160,7 +204,7 @@ class UserController extends \BaseController {
 
 		}
 
-		if($method == "edit-email-pass"){
+		if($method == "/account/email-pass"){
 
 			$newemail = Input::get('email');
 			
@@ -202,7 +246,7 @@ class UserController extends \BaseController {
 
 			//hack for redirect
 			if($method == "change-email-settings")
-				$method = "edit-email-pass";
+				$method = "/account/email-pass";
 
 
 			return Redirect::to($method)->withMessage('Profile successfully updated!');
@@ -210,14 +254,15 @@ class UserController extends \BaseController {
 		}		
 	}
 
-	public function getProfilePicture() {
 
-
-		Return View::make('users.profile-picture')->with('user', Auth::user());
-
-	}
-
-	public function postProfilePicture()
+	/**
+	* Save the profilepicture 
+	* POST
+	*
+	* @return view/redirect
+	*/
+	
+	public function saveProfilePicture()
 	{
 
 		if(Input::hasFile('profile_photo'))
@@ -259,7 +304,7 @@ class UserController extends \BaseController {
 				$user->updateUniques();
 				
 
-				Return Redirect::route('profile-picture')->with('user', Auth::user())->withMessage("Photo successfully uploaded!");
+				Return Redirect::back()->with('user', Auth::user())->withMessage("Photo successfully uploaded!");
 			}
 
 		}
@@ -271,6 +316,13 @@ class UserController extends \BaseController {
 	}
 
 
+
+	/**
+	* Save the new user password
+	*
+	* @return 
+	*/
+	
 	public function changepass() 
 	{
 
@@ -288,12 +340,12 @@ class UserController extends \BaseController {
 				if (!$user->updateUniques())
 				{
 
-					return Redirect::route('users.edit-email-pass')->withInput()->withErrors($user->errors());	
+					return Redirect::to('/account/email-pass')->withInput()->withErrors($user->errors());	
 
 				} else {
 
 
-					return Redirect::route('users.edit-email-pass')->withMessage('Your password has been successfully changed.');
+					return Redirect::to('/account/email-pass')->withMessage('Your password has been successfully changed.');
 
 					
 				}  	
@@ -302,18 +354,20 @@ class UserController extends \BaseController {
 			} else {
 
 
-				return Redirect::to('edit-email-pass')->withErrors(array('Incorrect Password'));
+				return Redirect::to('/account/email-pass')->withErrors(array('Incorrect Password'));
 			}
 
 	}
 
 
-	public function destroy($id)
-	{
-		//
-	}
 
-	//validates the user's email address.
+	
+	/**
+	* validate the user's email
+	*
+	* @return 
+	*/
+	
 	public function validate($id, $code)
 	{
 		$user = User::find($id);
@@ -335,5 +389,26 @@ class UserController extends \BaseController {
 		}
 
 	}
+
+
+
+
+	/**
+	* Resend's the activation code
+	*
+	* @return 
+	*/
+
+	public function resendActivation() {
+
+		$email = Auth::user()->email;
+		$username = Auth::user()->username;
+
+		Mail::queue('emails.welcome', array('code' => Auth::user()->confirmation_code, 'id' => Auth::user()->id), function($message) use($email, $username){
+
+			$message->to($email, $username)->subject('Welcome to SMG! Please verify your e-mail address');
+		});
+		return Redirect::to('dashboard')->withMessage('Confirmation email has been sent to <strong>'.$email.'</strong>.');
+	}	
 
 }

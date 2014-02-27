@@ -106,8 +106,9 @@ Route::filter('staff', function(){
 	}
 });
 
-Route::filter('owner', function($id){
+Route::filter('owner', function($route){
 
+	$id = $route->getParameter('id');
 	if(!Auth::check())
 
 			return Redirect::to('/');
@@ -118,7 +119,7 @@ Route::filter('owner', function($id){
 		if(Auth::user()->id != $id) {
 
 			App::abort(403, 'Unathorized Action.');
-			Log::warning('Unathorized user by user '.Auth::user()->username.' ('.Request::getClientIp().')');
+			Log::warning('Unathorized action by user '.Auth::user()->username.' ('.Request::getClientIp().')');
 
 		}
 

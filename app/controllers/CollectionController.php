@@ -7,10 +7,9 @@ class CollectionController extends \BaseController {
 
 	public function show($id) {
 
-		$collection = Collection::find($id);
+		$collection = Collection::findOrFail($id);
 
-		if(!$collection)
-			App::abort(404);
+
 		$collection->timestamps = false;
 		$collection->increment('views');
 		return View::make('collections.show')->withCollection($collection);
@@ -39,11 +38,11 @@ class CollectionController extends \BaseController {
 	public function saveorder($id) {
 
 		//check if mine
-		$collection = Collection::find($id);
+		$collection = Collection::findOrFail($id);
 		if(!$collection->isMine())
 			App::abort(403);
 
-		foreach(Input::get('photo-item') AS $order => $photo_id)
+		foreach(Input::get('item') AS $order => $photo_id)
 		{
 			DB::table('collection_photo')
 				->where('photo_id', $photo_id)
