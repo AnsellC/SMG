@@ -12,7 +12,7 @@
 				<div class="row">
 					<div class="profile-details col-xs-4 text-center"><i class="fa fa-picture-o"></i> {{ number_format(count(Auth::user()->photos)) }}</div>
 					<div class="profile-details col-xs-4 text-center"><span class="glyphicon glyphicon-compressed"></span> {{ number_format(count(Auth::user()->collections)) }}</div>
-					<div class="profile-details col-xs-4 text-center"><span class="glyphicon glyphicon-ok-sign"></span> {{ number_format(count(Auth::user()->photos)) }}</div>
+					<div class="profile-details col-xs-4 text-center"><i class="fa fa-user"></i> {{ number_format(count(Auth::user()->followers)) }}</div>
 				</div>
 			</div>
 			

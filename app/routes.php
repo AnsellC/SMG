@@ -14,12 +14,12 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 App::error(function(ModelNotFoundException $e)
 {
-    return Response::make(404);
+    return View::make('error.missing', 404);
 });
 
 Route::get('/', function()
 {
-	
+
 	if(Auth::check())
 		return Redirect::to('/dashboard');
 	return View::make('static.homepage');
@@ -30,6 +30,45 @@ Route::get('unverified-email', function(){
 	return View::make('static.unverified-email');
 });
 
+Route::get('about', function(){
+
+	return View::make('static.about');
+});
+Route::get('contact', function(){
+
+	return View::make('static.contact');
+});
+
+Route::get('browse', function(){
+
+	$photos = Photo::orderBy('created_at', 'DESC')->paginate(16);
+	return View::make('static.browse')->withPhotos($photos);
+});
+
+Route::post('contact', array(
+	'as'	=> 'contact',
+	function(){
+
+		$validator = Validator::make(
+			Input::all(),
+			array(
+				'name'		=> 'required|min:5',
+				'email'		=> 'email|required',
+				'message'	=> 'required|min:5'
+			)
+		);
+
+		if($validator->fails())
+			return Redirect::back()->withInput()->withErrors($validator->messages());
+
+		Mail::queue('emails.contact', array('name' => Input::get('name'), 'msg' => Input::get('message'), 'email' => Input::get('email'), 'ip' => $_SERVER['REMOTE_ADDR']), function($message){
+
+				$message->to("ansellcruz@gmail.com", "Ansell Cruz")->subject('New feedback message from SMG');
+			});
+
+		return Redirect::back()->withMessage("Thanks for your email!");
+	}
+));
 
 /*
 |--------------------------------------------------------------------------
@@ -62,7 +101,7 @@ Route::get('login', array('before' => 'guest', function(){
 Route::post('register',  array(
 	'before' 	=> 'guest',
 	'uses' 		=> 'UserController@store',
-
+	'as'		=> 'user.add'
 ));
 
 Route::post('login', array(

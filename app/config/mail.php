@@ -28,7 +28,7 @@ return array(
 	|
 	*/
 
-	'host' => getenv('MAIL_HOST'),
+	'host' => $_ENV['MAIL_HOST'],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => getenv('MAIL_FROM_ADDRESS'), 'name' => getenv('MAIL_NAME')),
+	'from' => array('address' => $_ENV['MAIL_FROM_ADDRESS'], 'name' => $_ENV['MAIL_NAME']),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return array(
 	|
 	*/
 
-	'username' => getenv('MAIL_USERNAME'),
+	'username' => $_ENV['MAIL_USERNAME'],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return array(
 	|
 	*/
 
-	'password' => getenv('MAIL_PASSWORD'),
+	'password' => $_ENV['MAIL_PASSWORD'],
 
 	/*
 	|--------------------------------------------------------------------------

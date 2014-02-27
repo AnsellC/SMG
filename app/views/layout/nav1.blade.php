@@ -11,9 +11,8 @@
 		<div class="collapse navbar-collapse navbar-left" id="navi">
 			<ul class="nav navbar-nav">
 				
-				<li><a href="/browse">Browse</a></li>	
-				<li><a href="/help">Help</a></li>	
-				<li class="last"><form class="navbar-form" role="search" method="post" action="/search"><i class="fa fa-search"></i> <input placeholder="search..." type="text" name="query"/></form></li>			
+				<li><a href="/browse">Browse</a></li>
+				<!--<li class="last"><form class="navbar-form" role="search" method="post" action="/search"><i class="fa fa-search"></i> <input placeholder="search..." type="text" name="query"/></form></li>			-->
 			</ul>
 		</div>
 
