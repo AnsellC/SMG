@@ -4,7 +4,8 @@
 		<div class="row">
 			<div class="col-xs-4 col-md-2">
 				<div class="picture">
-					@if(!Auth::user()->getProfilePic())
+
+					@if(Auth::user() AND !Auth::user()->getProfilePic())
 						<img src="/img/avatar/1.png" class="img-responsive avatar" alt=""/><br />
 					@else
 						<img class="avatar img-responsive" src="{{{ $user->getProfilePic('120x120') }}}" alt="" /><br />
