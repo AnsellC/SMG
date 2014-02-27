@@ -77,12 +77,12 @@ class User extends SMGModel implements UserInterface, RemindableInterface {
 	}
 	public function follow()
 	{
-		return $this->belongsToMany('User', 'user_follows', 'userid', 'followerid');
+		return $this->belongsToMany('User', 'user_follows', 'followerid', 'userid');
 	
 	}
 	public function followers()
 	{
-		return $this->belongsToMany('User', 'user_follows', 'followerid', 'userid');
+		return $this->belongsToMany('User', 'user_follows', 'userid', 'followerid');
 	}
 
 	public function collections()
@@ -126,7 +126,16 @@ class User extends SMGModel implements UserInterface, RemindableInterface {
 	{
 		return $this->email;
 	}
+	public function iFollow($user_id) {
 
+		if(Auth::guest())
+			return false;
+
+		$following = Auth::user()->follow()->lists('userid');
+		if(in_array($user_id, $following))
+			return true;
+		return false;
+	}
 
 	public function getUploads() {
 
@@ -217,7 +226,7 @@ class User extends SMGModel implements UserInterface, RemindableInterface {
 				return Storage::getPhoto($this->profile_picture_name, $size);
 			}
 			else 
-				return false;
+				return '/img/avatar/1.png';
 			
 		}
 		else 

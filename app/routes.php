@@ -163,8 +163,11 @@ Route::get('users/delfavorite/{photoid}', array(
 
 ))->where(array('photoid' => '[0-9]+'));
 
+Route::get('users/{username}/followers', array(
 
+	'uses'		=> 'UserController@followers'
 
+))->where(array('username' => '[a-zA-Z0-9]+'));
 
 /*
 |--------------------------------------------------------------------------
@@ -383,5 +386,18 @@ Route::get('api/getcomments/{id}/{response}', array(
 
 
 
+/*
+|--------------------------------------------------------------------------
+| follow
+|--------------------------------------------------------------------------
+|
+| 
+| 
+|
+*/
 
+Route::get('follow/{username}', array(
+	'before'	=> 'auth',
+	'uses'		=> 'UserController@follow'
 
+))->where(array('username' => '[a-zA-Z0-9]+'));

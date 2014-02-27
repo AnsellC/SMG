@@ -231,4 +231,8 @@ div.popover {z-index: 9999;}
   div.photo-holder.pop-photo-holder {height: 640px;}
 }
 
+div.follower {border-bottom: 1px solid #eee; padding-top: 10px; padding-bottom: 10px;}
+div.follower span.username a {font-weight: bold; font-size: 17px; display: block;}
+div.follower .pic {margin-right: 10px; width: 80px; height: 80px;}
+div.follower span.location {display: block; color: #888; font-size: 12px; margin-bottom: 5px;}
 

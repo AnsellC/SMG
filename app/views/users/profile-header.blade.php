@@ -10,7 +10,14 @@
 					@else
 						<img class="avatar img-responsive" src="{{{ $user->getProfilePic('120x120') }}}" alt="" /><br />
 					@endif
-					<button class="btn btn-primary btn-sm">Follow</button>
+					<a class="btn btn-primary btn-sm @if(Auth::user())follow-user@endif" href="/follow/{{ $user->username }}">
+								@if(Auth::user() AND Auth::user()->iFollow($user->id))
+									<i class="fa fa-thumbs-up"></i> Following
+								@else
+									<i class="fa fa-hand-o-right"></i> Follow
+								@endif
+							</a>
+
 				</div>
 			</div>
 			<div clas="col-xs-8 col-md-10">

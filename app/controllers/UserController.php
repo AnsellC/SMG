@@ -411,4 +411,66 @@ class UserController extends \BaseController {
 		return Redirect::to('dashboard')->withMessage('Confirmation email has been sent to <strong>'.$email.'</strong>.');
 	}	
 
+
+
+	/**
+	* Follow a user
+	*
+	* @return view
+	*/
+	
+	public function follow($username) {
+
+		if(Auth::guest())
+			return Response::json(array(
+				'status'	=> 'fail',
+				'msg'		=> 'Please login to follow '.$username	
+			));			
+
+		
+		$user = User::where('username', $username)->firstOrFail();
+		$followers = $user->followers()->lists('followerid');
+
+
+		if($user->id == Auth::user()->id)
+			return Response::json(array(
+				'status'	=> 'fail',
+				'msg'		=> 'You can\'t follow yourself lol...'	
+			));
+
+		if(!in_array(Auth::user()->id, $followers)) {
+
+			$user->followers()->attach(Auth::user()->id);
+
+			return Response::json(array(
+				'status' 	=> 'success',
+				'msg'		=> 'You are now following '.$user->username
+			));
+		}
+		$user->followers()->detach(Auth::user()->id);
+		return Response::json(array(
+			'status'		=> 'warn',
+			'msg'			=> 'You have unfollowed '.$user->username
+		));
+	}
+
+
+
+
+	/**
+	* Display followers of a user
+	*
+	* @return 
+	*/
+
+	public function followers($username) {
+
+		$user = User::where('username', $username)->firstOrFail();
+
+		return View::make('users.followers')->withUser($user);
+
+
+	}
+	
+
 }

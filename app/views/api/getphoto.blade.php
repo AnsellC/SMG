@@ -33,7 +33,13 @@
 							<a href="/users/{{{ $photo->user->username }}}">{{ $photo->user->username }}</a>
 						</div>
 						<div class="buttons">
-							<a class="btn btn-xs btn-blue" href="/follow/{{ $photo->user->username }}"><i class="fa fa-hand-o-right"></i> Follow</a>
+							<a class="btn btn-xs btn-blue @if(Auth::user())follow-user@endif" href="/follow/{{ $photo->user->username }}">
+								@if(Auth::user() AND Auth::user()->iFollow($photo->user->id))
+									<i class="fa fa-thumbs-up"></i> Following
+								@else
+									<i class="fa fa-hand-o-right"></i> Follow
+								@endif
+							</a>
 						</div>
 					</div>
 					<div class="clearfix"></div>

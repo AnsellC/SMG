@@ -32,7 +32,7 @@
 		</div>
 	    <div class="modal-footer">
 	       
-	        <a href="javscript:;" data-dismiss="modal" class="btn primary">OK</a>
+	        <a href="javscript:;" data-dismiss="modal" class="btn btn-primary">OK</a>
 	    </div>	
 				@endif
 	    	@else
@@ -42,7 +42,7 @@
 	    </div>
 	    <div class="modal-footer">
 	       
-	        <a href="javscript:;" data-dismiss="modal" class="btn primary">OK</a>
+	        <a href="javscript:;" data-dismiss="modal" class="btn btn-primary">OK</a>
 	    </div>				
 			@endif
     </div>

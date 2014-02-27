@@ -6,6 +6,8 @@
 			    };
 			});
 
+
+
 			$(document).on('keydown', "textarea.comment-txt", function(event) {
 	   			 if (event.keyCode == 13) {
 	   			 	var frm = $(this.form);
@@ -35,6 +37,26 @@
 	       			
 	     		}
      		});
+
+			$(document).on('click', '.follow-user', function(e){
+				var btn = $(this);
+				e.preventDefault();
+				$.get($(this).attr('href'), function(resp){
+
+					if(resp.status == "success")
+					{
+						toastr.success(resp.msg);
+						btn.html('<i class="fa fa-thumbs-up"></i> Following');
+					}
+						
+					else
+					{
+						toastr.warning(resp.msg);
+						btn.html('<i class="fa fa-hand-o-right"></i> Follow');
+					}
+				});
+				
+			});
 
 
 			$(document).on('click','#like-btn', function(){
