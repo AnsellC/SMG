@@ -23,6 +23,10 @@
 		@include('modals.delete-item')
 	@endif
 
+	@if(Route::is('collections.show'))
+		@include('modals.show-photo')
+	@endif
+
 	<div class="container-fluid" id="wrap">
 
 	@include('layout.nav1')
@@ -55,6 +59,7 @@
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<script src="/js/bootstrap-switch.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.min.js"></script>
+	<script src="/js/jquery.scrollTo.min.js"></script>
 	<script src="/js/site.js"></script>
 	<!--#### END REQUIRED JAVASCRIPT #### -->
 

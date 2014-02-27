@@ -58,6 +58,7 @@ class MyUploadController extends BaseController {
 				Storage::createPhoto($uploaded_file, "256x144");
 				Storage::createPhoto($uploaded_file, "384x216");
 				Storage::createPhoto($uploaded_file, "40x40");
+				Storage::createPhoto($uploaded_file, "1035x640");
 				$job->delete();
 				
 			});

@@ -14,15 +14,26 @@ class ApiController extends \BaseController {
 
 	public function getphoto($photo_id, $response = "json") {
 
-		$photo = Photo::find($photo_id);
-		if(!$photo)
-			App::abort(404);
+		$photo = Photo::findOrFail($photo_id);
+	
 
 
 		if($response == "json")
 			return Response::json($photo);
 
 		return View::make('api.getphoto')->withPhoto($photo);
+	}
+
+
+	public function getcomments($photo_id, $response = "json") {
+
+		$photo = Photo::findOrFail($photo_id);
+
+		if($response == "json")
+			return Response::json($photo->comments);
+		else
+			return View::make('api.getcomments')->withPhoto($photo);
+
 	}
 }
 ?>

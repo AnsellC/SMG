@@ -377,7 +377,9 @@ Route::get('api/getphoto/{id}/{response}', array(
 	'uses' 		=> 'ApiController@getphoto'
 ))->where(array('id' => '[0-9]+', 'response' => 'html|json'));
 
-
+Route::get('api/getcomments/{id}/{response}', array(
+	'uses'		=> 'ApiController@getcomments'
+))->where(array('id' => '[0-9]+', 'response' => 'html|json'));
 
 
 

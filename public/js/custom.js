@@ -1,13 +1,38 @@
-			$("textarea.comment-txt").keyup(function(e) {
+			
+		
+			$(document).on('keyup', "textarea.comment-txt", function(e) {
 			    while($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css("borderTopWidth")) + parseFloat($(this).css("borderBottomWidth"))) {
 			        $(this).height($(this).height()+1);
 			    };
 			});
 
-			$('textarea.comment-txt').keydown(function(event) {
+			$(document).on('keydown', "textarea.comment-txt", function(event) {
 	   			 if (event.keyCode == 13) {
-	        		$(this.form).submit()
-	       			return false;
+	   			 	var frm = $(this.form);
+	   			 	var txtarea = $(this);
+
+	   			 	
+	   			 	$.post(frm.attr("action"), frm.serialize(), function(data){
+
+	   			 		if(data.status == "success")
+	   			 		{
+	   			 			$('.comments').load('/api/getcomments/'+data.photo_id+'/html', function(){
+
+	   			 				$('.comments').scrollTo('100%',300);
+	   			 				txtarea.val('');
+	   			 				toastr.success(data.msg);
+	   			 			});
+	   			 			
+
+	   			 		} else {
+
+	   			 			toastr.error(data.content);
+	   			 		}
+	   			 	});
+	   			 	
+	   			 	return false;
+	        		//$(this.form).submit();
+	       			
 	     		}
      		});
 

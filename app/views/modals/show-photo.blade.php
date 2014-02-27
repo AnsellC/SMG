@@ -1,6 +1,6 @@
 
 
-<div class="modal fade" id="collection-modal" tabindex="-1" role="dialog" aria-labelledby="error-modal-label" aria-hidden="true">
+<div class="modal fade" style="z-index: 99999;" id="collection-modal" tabindex="-1" role="dialog" aria-labelledby="error-modal-label" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">

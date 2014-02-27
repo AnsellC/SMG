@@ -2,7 +2,7 @@
 <div class="row" style="width:100%; margin: 0px;">
 	<div class="col-md-9 photo-holder pop-photo-holder">
 		<div class="hold">
-			<img src="{{{ Storage::getPhoto($photo->file_path) }}}" alt="{{{ $photo->file_name }}}" class="img-responsive" style="max-width: 99.2%;" />
+			<img src="{{{ Storage::getPhoto($photo->file_path, '1030x640') }}}" alt="{{{ $photo->file_name }}}" class="img-responsive" style="max-width: 99.2%;" />
 		</div>
 		@if(!empty($photo->description))
 			<div class="photo-description">
