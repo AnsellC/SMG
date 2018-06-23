@@ -1,13 +1,13 @@
-<?php namespace SMG\Storage\Facades;
+<?php
 
+namespace SMG\Storage\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Storage extends Facade {
-	
-
-	protected static function getFacadeAccessor() {
-
-		return 'Storage';
-	}
+class Storage extends Facade
+{
+    protected static function getFacadeAccessor()
+    {
+        return 'Storage';
+    }
 }

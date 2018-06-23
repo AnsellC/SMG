@@ -1,8 +1,8 @@
-<?php namespace SMG\Storage\Repositories;
+<?php
 
-interface StorageRepositoryInterface {
-	
+namespace SMG\Storage\Repositories;
 
-	function save($inputfile, $file_path);
-
+interface StorageRepositoryInterface
+{
+    public function save($inputfile, $file_path);
 }

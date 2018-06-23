@@ -1,37 +1,38 @@
-<?php 
+<?php
+
 namespace SMG\Model;
 
 use LaravelBook\Ardent\Ardent;
 
-abstract class SMGModel extends Ardent {
-	
+abstract class SMGModel extends Ardent
+{
+    //checks if the item being fetched is owned by the logged in user
+    public function isMine()
+    {
+        if (\Auth::guest()) {
+            return false;
+        }
 
-	//checks if the item being fetched is owned by the logged in user
-	public function isMine() {
+        //check the class, if its a User class we just need to check the id otherwise it'll be user_id
+        if (get_class($this) == 'User') {
+            $userid = $this->id;
+        } else {
+            $userid = $this->user_id;
+        }
 
-		if(\Auth::guest())
-			return false;
+        if (\Auth::user()->id == $userid) {
+            return true;
+        }
 
-		//check the class, if its a User class we just need to check the id otherwise it'll be user_id
-		if(get_class($this) == "User") 
-			$userid = $this->id;
-		else
-			$userid = $this->user_id;
+        return false;
+    }
 
-		if(\Auth::user()->id == $userid)
-			return true;
-		
+    public function scopeGetMine($query)
+    {
+        if (\Auth::guest()) {
+            return false;
+        }
 
-		return false;
-
-	}
-	public function scopeGetMine ($query)
-	{
-	    if(\Auth::guest()) return false;
-
-	    return $query->where('user_id', \Auth::user()->id);
-
-	}
-
-
+        return $query->where('user_id', \Auth::user()->id);
+    }
 }

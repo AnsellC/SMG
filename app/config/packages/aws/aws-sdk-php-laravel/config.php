@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-return array(
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -64,4 +64,4 @@ return array(
     */
     'config_file' => null,
 
-);
+];
