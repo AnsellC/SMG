@@ -11,15 +11,12 @@
 |
 */
 
-App::before(function($request)
-{
-	//
+App::before(function ($request) {
+    //
 });
 
-
-App::after(function($request, $response)
-{
-	//
+App::after(function ($request, $response) {
+    //
 });
 
 /*
@@ -33,32 +30,30 @@ App::after(function($request, $response)
 |
 */
 
-Route::filter('confirmed', function(){
-	if(Auth::guest()) return Redirect::guest('login');
-	
-	if(Auth::user()->confirmed != 1 AND !Auth::guest())
-		return Redirect::to('unverified-email');
-		
+Route::filter('confirmed', function () {
+    if (Auth::guest()) {
+        return Redirect::guest('login');
+    }
 
+    if (Auth::user()->confirmed != 1 and !Auth::guest()) {
+        return Redirect::to('unverified-email');
+    }
 });
 
-Route::filter('unconfirmed', function(){
-
-	if(Auth::user()->confirmed == 1 AND !Auth::guest())
-		return Redirect::to('/');
-		
-
+Route::filter('unconfirmed', function () {
+    if (Auth::user()->confirmed == 1 and !Auth::guest()) {
+        return Redirect::to('/');
+    }
 });
 
-Route::filter('auth', function()
-{
-	if (Auth::guest()) return Redirect::guest('login');
+Route::filter('auth', function () {
+    if (Auth::guest()) {
+        return Redirect::guest('login');
+    }
 });
 
-
-Route::filter('auth.basic', function()
-{
-	return Auth::basic();
+Route::filter('auth.basic', function () {
+    return Auth::basic();
 });
 
 /*
@@ -72,9 +67,10 @@ Route::filter('auth.basic', function()
 |
 */
 
-Route::filter('guest', function()
-{
-	if (Auth::check()) return Redirect::to('/');
+Route::filter('guest', function () {
+    if (Auth::check()) {
+        return Redirect::to('/');
+    }
 });
 
 /*
@@ -88,41 +84,27 @@ Route::filter('guest', function()
 |
 */
 
-Route::filter('csrf', function()
-{
-	if (Session::token() != Input::get('_token'))
-	{
-		throw new Illuminate\Session\TokenMismatchException;
-	}
+Route::filter('csrf', function () {
+    if (Session::token() != Input::get('_token')) {
+        throw new Illuminate\Session\TokenMismatchException();
+    }
 });
 
-
-Route::filter('staff', function(){
-
-	if(Auth::user()->isstaff != 1) {
-
-		App::abort(403, 'Unathorized Action.');
-		Log::warning('Unathorized admin access by user ('.Request::getClientIp().')');
-	}
+Route::filter('staff', function () {
+    if (Auth::user()->isstaff != 1) {
+        App::abort(403, 'Unathorized Action.');
+        Log::warning('Unathorized admin access by user ('.Request::getClientIp().')');
+    }
 });
 
-Route::filter('owner', function($route){
-
-	$id = $route->getParameter('id');
-	if(!Auth::check())
-
-			return Redirect::to('/');
-
-	else
-	{
-
-		if(Auth::user()->id != $id) {
-
-			App::abort(403, 'Unathorized Action.');
-			Log::warning('Unathorized action by user '.Auth::user()->username.' ('.Request::getClientIp().')');
-
-		}
-
-	}
-
+Route::filter('owner', function ($route) {
+    $id = $route->getParameter('id');
+    if (!Auth::check()) {
+        return Redirect::to('/');
+    } else {
+        if (Auth::user()->id != $id) {
+            App::abort(403, 'Unathorized Action.');
+            Log::warning('Unathorized action by user '.Auth::user()->username.' ('.Request::getClientIp().')');
+        }
+    }
 });
